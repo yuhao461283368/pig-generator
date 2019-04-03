@@ -1,0 +1,28 @@
+export const tableOption = {
+    'border': true,
+    'stripe': true,
+    'menuAlign': 'center',
+    'align': 'center',
+    'editBtn': false,
+    'delBtn': false,
+    'addBtn': false,
+    'column': [{}
+#foreach ($column in $columns)
+,{
+    width: 200
+    ,label: '$column.comments'
+    ,prop: '$column.attrname'
+    ,align: 'center'
+    ,sortable: true
+    ,search:true
+    #if($column.nullable == 'NO')
+        ,rules: [{
+        required: true,
+        message: '请输入$column.comments',
+        trigger: 'blur'
+        }]
+    #end
+}
+#end
+    ]
+}

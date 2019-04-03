@@ -1,0 +1,123 @@
+<template>
+  <div class="app-container pull-auto">
+    <avue-crud ref="crud" :page="page" :data="tableData" :table-loading="tableLoading" :option="tableOption" @search-change="searchChange"
+               @current-change="currentChange" @size-change="sizeChange" @sort-change="sortChange" @row-update="rowUpdate"
+               @row-save="rowSave" @row-del="rowDel">
+    </avue-crud>
+  </div>
+</template>
+
+<script>
+  import {fetchList, getObj, addObj, putObj, delObj} from '@/api/${classname}'
+  import {tableOption} from '@/const/crud/${classname}'
+  import {mapGetters} from 'vuex'
+
+  export default {
+    name: '${classname}',
+    data() {
+      return {
+        tableData: [],
+        page: {
+          total: 0, //总页数
+          currentPage: 1, //当前页数
+          pageSize: 20, //每页显示多少条
+          queryParams:{},
+          sort:{
+            prop:'${pk.attrname}',
+            order:'descending'
+          }
+        },
+        tableLoading: false,
+        tableOption: tableOption,
+      }
+    },
+    created() {
+      this.getList()
+      this.tableOption.addBtn = this.permissions['${classname}_add']
+      this.tableOption.delBtn = this.permissions['${classname}_del']
+      this.tableOption.editBtn = this.permissions['${classname}_upd']
+    },
+    computed: {
+      ...mapGetters(['permissions'])
+    },
+    methods: {
+      getList: function () {
+        this.tableLoading = true
+        fetchList(this.page).then(response => {
+          this.tableData = response.data.data.records
+          this.page.total = response.data.data.total
+          this.tableLoading = false
+        })
+      },
+      currentChange: function () {
+        this.getList()
+      },
+      currentChange: function (val) {
+        this.page.currentPage = val
+        this.getList()
+      },
+      sizeChange: function (val) {
+        this.page.pageSize = val
+        this.getList()
+      },
+      searchChange: function(params){
+        this.page.queryParams = params
+        this.getList()
+      },
+      sortChange(sort){
+        this.page.sort.prop = sort.prop
+        this.page.sort.order = sort.order
+        this.getList()
+      },
+      rowDel: function (row, index) {
+        var _this = this
+        this.$confirm(
+                '是否确认删除${pk.comments}为' + row.${pk.attrname},
+                '提示',
+                {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                })
+                .then(function () {
+                  return delObj(row.${pk.attrname})
+                })
+                .then(data => {
+                  _this.tableData.splice(index, 1)
+                  this.getList()
+                  _this.$message({
+                    showClose: true,
+                    message: '删除成功',
+                    type: 'success'
+                  })
+                })
+                .catch(function (err) {
+                })
+      },
+      rowUpdate: function (row, index, done) {
+        putObj(row).then(data => {
+          this.tableData.splice(index, 1, Object.assign({}, row))
+          this.$message({
+            showClose: true,
+            message: '修改成功',
+            type: 'success'
+          })
+          done()
+          this.getList()
+        })
+      },
+      rowSave: function (row, done) {
+        addObj(row).then(data => {
+          this.tableData.push(Object.assign({}, row))
+          this.$message({
+            showClose: true,
+            message: '添加成功',
+            type: 'success'
+          })
+          done()
+          this.getList()
+        })
+      }
+    }
+  }
+</script>

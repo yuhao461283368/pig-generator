@@ -1,0 +1,10 @@
+INSERT INTO `pig`.`sys_menu` (`app_name`, `name`, `permission`, `path`, `url`, `method`, `parent_id`, `icon`, `component`, `sort`, `type`, `create_time`, `update_time`, `del_flag`)
+VALUES ('pig', '${comments}管理', null, '${classname}', '', '', '1', 'icon-bangzhushouji', 'views/${classname}/index', '0', '0', NOW(), null, '0');
+INSERT INTO `pig`.`sys_menu` ( `app_name`, `name`, `permission`, `path`, `url`, `method`, `parent_id`, `icon`, `component`, `sort`, `type`, `create_time`, `update_time`, `del_flag`)
+VALUES ('pig', '${comments}查询', '${classname}_get', NULL, '/${serviceName}/${classname}/**', 'GET', LAST_INSERT_ID(), NULL, NULL, NULL, '1', NOW(), null, '0');
+INSERT INTO `pig`.`sys_menu` ( `app_name`, `name`, `permission`, `path`, `url`, `method`, `parent_id`, `icon`, `component`, `sort`, `type`, `create_time`, `update_time`, `del_flag`)
+VALUES ('pig', '${comments}新增', '${classname}_add', NULL, '/${serviceName}/${classname}/**', 'POST', LAST_INSERT_ID()-1, NULL, NULL, NULL, '1', NOW(), null, '0');
+INSERT INTO `pig`.`sys_menu` ( `app_name`, `name`, `permission`, `path`, `url`, `method`, `parent_id`, `icon`, `component`, `sort`, `type`, `create_time`, `update_time`, `del_flag`)
+VALUES ('pig', '${comments}修改', '${classname}_upd', NULL, '/${serviceName}/${classname}/**', 'PUT', LAST_INSERT_ID()-2, NULL, NULL, NULL, '1', NOW(), null, '0');
+INSERT INTO `pig`.`sys_menu` ( `app_name`, `name`, `permission`, `path`, `url`, `method`, `parent_id`, `icon`, `component`, `sort`, `type`, `create_time`, `update_time`, `del_flag`)
+VALUES ('pig', '${comments}删除', '${classname}_del', NULL, '/${serviceName}/${classname}/**', 'DELETE', LAST_INSERT_ID()-3, NULL, NULL, NULL, '1', NOW(), null, '0');

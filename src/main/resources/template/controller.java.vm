@@ -1,0 +1,41 @@
+package ${package}.${serviceName}.controller;
+
+import ${package}.${serviceName}.model.entity.${className};
+import ${package}.${serviceName}.service.${className}Service;
+import ${package}.common.util.R;
+import ${package}.common.web.MyBaseController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("${secondModuleName}")
+public class ${className}Controller extends MyBaseController<${className}Service,${className}>
+{
+
+    @GetMapping({ "/{id}" })
+    @ApiOperation("id查询${comments}")
+    public R get(@PathVariable final String id) {
+        ${className} sysOauthClientDetails = service.selectById(id);
+        return new R(sysOauthClientDetails);
+    }
+
+    @PostMapping
+    @ApiOperation("添加${comments}")
+    public R add(@RequestBody final ${className} sysOauthClientDetails) {
+        return new R(service.insert(sysOauthClientDetails));
+    }
+
+    @DeleteMapping({ "/{id}" })
+    @ApiOperation("删除${comments}")
+    public R delete(@PathVariable final Long id) {
+        service.deleteById(id);
+        return new R();
+    }
+
+    @PutMapping
+    @ApiOperation("修改${comments}")
+    public R edit(@RequestBody final ${className} sysOauthClientDetails) {
+        service.updateById(sysOauthClientDetails);
+        return new R();
+    }
+}

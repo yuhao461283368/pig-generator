@@ -1,0 +1,42 @@
+package ${package}.${serviceName}.model.entity;
+
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+
+import java.io.*;
+
+@ApiModel("${comments}")
+@TableName("${tableName}")
+@Data
+@NoArgsConstructor
+public class ${className} extends Model<${className}>
+{
+	private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+	#if($column.columnName == $pk.columnName)
+	@ApiModelProperty("$column.comments")
+@TableId(value = "$column.columnName", type = IdType.AUTO)
+	#if($column.nullable == 'NO')
+	#end
+	private $column.attrType $column.attrname;
+	protected Serializable pkVal() {
+		return this.$column.attrname;
+	}
+	#else
+@ApiModelProperty("$column.comments")
+	@TableField("$column.columnName")
+	#if($column.nullable == 'NO')
+	@NonNull
+	#end
+	private $column.attrType $column.attrname;
+	#end
+
+#end
+}
